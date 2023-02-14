@@ -9,8 +9,8 @@ interface Props {
 function chatPage({ params: { id } }: Props) {
   return (
     <div className=" flex flex-col h-screen overflow-hidden">
-      <Chat ChatId={id} />
-      <ChatInput ChatId={id} />
+      <Chat chatId={id} />
+      <ChatInput chatId={id} />
     </div>
   );
 }

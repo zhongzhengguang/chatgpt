@@ -1,6 +1,7 @@
 import React from "react";
 import { BsSun, BsLightningCharge } from "react-icons/bs";
 import { AiOutlineWarning } from "react-icons/ai";
+
 function Homepage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-white">

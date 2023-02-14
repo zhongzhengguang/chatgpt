@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import query from "@/lib/queryApi";
+import query from "../../lib/queryApi";
 import admin from "firebase-admin";
 import { adminDb } from "@/firebaseAdmin";
 interface Data {
@@ -10,10 +10,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { prompt, ChatId, model, session } = req.body;
+  const { prompt, chatId, model, session } = req.body;
 
-  if (!ChatId) {
-    res.status(400).json({ answer: "Please provide a valid ChatId !" });
+  if (!chatId) {
+    res.status(400).json({ answer: "Please provide a valid chatId !" });
     return;
   }
   if (!prompt) {
@@ -22,10 +22,11 @@ export default async function handler(
   }
 
   // ChatGPT Query
-  const response = await query(prompt, ChatId, model);
+  const response = await query(prompt, chatId, model);
+
   const message: Message = {
     text: response || "ChatGPT was unable to find answer for that!",
-    createAt: admin.firestore.Timestamp.now(),
+    createdAt: admin.firestore.Timestamp.now(),
     user: {
       _id: "ChatGPT",
       name: "ChatGPT",
@@ -36,7 +37,7 @@ export default async function handler(
     .collection("users")
     .doc(session?.user?.email)
     .collection("chats")
-    .doc(ChatId)
+    .doc(chatId)
     .collection("messages")
     .add(message);
 

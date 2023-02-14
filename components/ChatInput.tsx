@@ -5,15 +5,20 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { HiPaperAirplane } from "react-icons/hi";
+import ModelSelection from "./ModelSelection";
+import useSWR from "swr";
 interface Props {
-  ChatId: string;
+  chatId: string;
 }
 
-function ChatInput({ ChatId }: Props) {
+function ChatInput({ chatId }: Props) {
   const [prompt, setPrompt] = useState("");
   const { data: session } = useSession();
   // useSWR to get model
-  const model = "text-advinci-003";
+  const { data: model } = useSWR("model", {
+    fallbackData: "text-davinci-003",
+  });
+  // const model = "text-advinci-003";
 
   const senMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,7 +27,7 @@ function ChatInput({ ChatId }: Props) {
     setPrompt("");
     const message: Message = {
       text: input,
-      createAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
       user: {
         _id: session?.user?.email!,
         name: session?.user?.name!,
@@ -38,7 +43,7 @@ function ChatInput({ ChatId }: Props) {
         "users",
         session?.user?.email!,
         "chats",
-        ChatId,
+        chatId,
         "messages"
       ),
       message
@@ -53,7 +58,7 @@ function ChatInput({ ChatId }: Props) {
       },
       body: JSON.stringify({
         prompt: input,
-        ChatId,
+        chatId,
         model,
         session,
       }),
@@ -63,22 +68,23 @@ function ChatInput({ ChatId }: Props) {
         id: notification,
       });
     });
-    //   await fetch("/api/askQuestionTest", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       prompt: input,
-    //       ChatId,
-    //       model,
-    //       session,
-    //     }),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //     });
+
+    // await fetch("/api/askQuestion", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     prompt: input,
+    //     chatId,
+    //     model,
+    //     session,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   };
   return (
     <div className="bg-gray-700 text-gray-400 rounded-lg text-sm">
@@ -103,7 +109,9 @@ function ChatInput({ ChatId }: Props) {
           <HiPaperAirplane className="rotate-45 h-4 w-4" />
         </button>
       </form>
-      <div></div>
+      <div className="md:hidden">
+        <ModelSelection />
+      </div>
     </div>
   );
 }
