@@ -5,8 +5,6 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { HiPaperAirplane } from "react-icons/hi";
-import ModelSelection from "./ModelSelection";
-import useSWR from "swr";
 interface Props {
   chatId: string;
 }
@@ -15,10 +13,7 @@ function ChatInput({ chatId }: Props) {
   const [prompt, setPrompt] = useState("");
   const { data: session } = useSession();
   // useSWR to get model
-  const { data: model } = useSWR("model", {
-    fallbackData: "text-davinci-003",
-  });
-  // const model = "text-advinci-003";
+  const model = "text-davinci-003";
 
   const senMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,6 +63,7 @@ function ChatInput({ chatId }: Props) {
         id: notification,
       });
     });
+    console.log(model);
 
     // await fetch("/api/askQuestion", {
     //   method: "POST",
@@ -109,9 +105,7 @@ function ChatInput({ chatId }: Props) {
           <HiPaperAirplane className="rotate-45 h-4 w-4" />
         </button>
       </form>
-      <div className="md:hidden">
-        <ModelSelection />
-      </div>
+      <div></div>
     </div>
   );
 }

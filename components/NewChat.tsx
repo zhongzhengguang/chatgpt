@@ -23,7 +23,7 @@ function NewChat() {
   return (
     <div onClick={createNewChat} className=" border-gray-700 border chatRow">
       <AiOutlinePlus />
-      <p className="">New Chat</p>
+      <p>New Chat</p>
     </div>
   );
 }

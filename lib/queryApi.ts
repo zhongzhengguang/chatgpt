@@ -14,7 +14,7 @@ const query = async (prompt: string, chatId: string, model: string) => {
     .then((res) => res.data.choices[0].text)
     .catch(
       (err) =>
-        `ChatGPT was unable to find answer for that!(Error : ${err.message})`
+        `ChatGPT was unable to find answer for that!!!!(Error : ${err.message})`
     );
 
   return res;
