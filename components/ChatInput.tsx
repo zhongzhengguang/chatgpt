@@ -67,7 +67,6 @@ function ChatInput({ chatId }: Props) {
         id: notification,
       });
     });
-    console.log(model);
 
     // await fetch("/api/askQuestion", {
     //   method: "POST",
@@ -109,7 +108,7 @@ function ChatInput({ chatId }: Props) {
           <HiPaperAirplane className="rotate-45 h-4 w-4" />
         </button>
       </form>
-      <div>
+      <div className=" md:hidden">
         <ModelSelection />
       </div>
     </div>
